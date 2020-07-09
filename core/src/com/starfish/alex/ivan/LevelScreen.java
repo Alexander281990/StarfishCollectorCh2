@@ -2,12 +2,12 @@ package com.starfish.alex.ivan;
 
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
-public class StarfishCollector extends GameBeta {
+public class LevelScreen extends BaseScreen {
+
     private Turtle turtle;
     private boolean win;
-
-    public void initialize()
-    {
+    @Override
+    public void initialize() {
         BaseActor ocean = new BaseActor(0,0, mainStage);
         ocean.loadTexture( "water-border.jpg" );
         ocean.setSize(1200,900);
@@ -29,8 +29,8 @@ public class StarfishCollector extends GameBeta {
         win = false;
     }
 
-    public void update(float dt)
-    {
+    @Override
+    public void update(float dt) {
         for (BaseActor rockActor : BaseActor.getList(mainStage, "com.starfish.alex.ivan.Rock"))
             turtle.preventOverlap(rockActor);
 
