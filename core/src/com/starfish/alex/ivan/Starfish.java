@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 public class Starfish extends BaseActor {
 
-    private boolean collected; // переменная, котороя будет отслеживать
+    public boolean collected; // переменная, котороя будет отслеживать
 
     public Starfish(float x, float y, Stage s) {
         super(x, y, s);
