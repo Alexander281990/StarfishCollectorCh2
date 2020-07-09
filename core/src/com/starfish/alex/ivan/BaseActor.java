@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
@@ -17,6 +18,9 @@ public class BaseActor extends Actor {
     private float elapsedTime;
     private boolean animationPaused;
 
+    // переменные для плавного движения
+    private Vector2 velocityVec;
+
     public BaseActor(float x, float y, Stage s) {
         super();
         setPosition(x, y);
@@ -26,6 +30,9 @@ public class BaseActor extends Actor {
         animation = null;
         elapsedTime = 0;
         animationPaused = false;
+
+        // инициализация переменных для плавного движения
+        velocityVec = new Vector2(0,0);
 
     }
 
