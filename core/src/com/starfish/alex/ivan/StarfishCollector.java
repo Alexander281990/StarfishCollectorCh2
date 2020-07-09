@@ -6,6 +6,7 @@ public class StarfishCollector extends GameBeta {
     private Turtle turtle;
     private Starfish starfish;
     private BaseActor ocean;
+    private Rock rock;
 
     @Override
     public void initialize() {
@@ -16,10 +17,16 @@ public class StarfishCollector extends GameBeta {
         starfish = new Starfish(380, 380, mainStage);
 
         turtle = new Turtle(20, 20, mainStage);
+
+        rock = new Rock(200, 200, mainStage);
     }
 
     @Override
     public void update(float dt) {
+
+        turtle.preventOverlap(rock); // если черепаха косается камня, то камень стоит на месте, а черепаха не может проплыть через него (препятствие)
+                                     // усли turtle and rock поменять местами, то черепаха будет двигать камень
+
 
         if (turtle.overlaps(starfish) && !starfish.isCollected()){
             starfish.collect();
