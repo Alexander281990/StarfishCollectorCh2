@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -21,6 +22,14 @@ public class BaseActor extends Actor {
     // переменные для плавного движения
     private Vector2 velocityVec;
 
+    // переменные для ускорения обьекта
+    private Vector2 accelerationVec;
+    private float acceleration;
+
+    // переменные для максимальной скорости и замедления обьекта
+    private float maxSpeed;
+    private float deceleration;
+
     public BaseActor(float x, float y, Stage s) {
         super();
         setPosition(x, y);
@@ -33,6 +42,14 @@ public class BaseActor extends Actor {
 
         // инициализация переменных для плавного движения
         velocityVec = new Vector2(0,0);
+
+        // инициализация переменных для ускорения
+        acceleration = 0;
+        accelerationVec = new Vector2(0, 0);
+
+        // инициализация переменных для максимальной скорости и ускорения
+        maxSpeed = 1000;
+        deceleration = 0;
 
     }
 
@@ -134,6 +151,72 @@ public class BaseActor extends Actor {
     // метод для проверки завершения анимации
     public boolean isAnimationFinished() {
         return animation.isAnimationFinished(elapsedTime);
+    }
+
+    // методы для установки и получения скорости и угла движения обьекта Actor
+    public void setSpeed(float speed) {
+        if (velocityVec.len() == 0)
+            velocityVec.set(speed, 0);
+        else
+            velocityVec.setLength(speed);
+    }
+
+    public float getSpeed() {
+        return velocityVec.len();
+    }
+
+    public void setMotionAngle(float angle) {
+        velocityVec.setAngle(angle);
+    }
+
+    public float getMotionAngle() {
+        return velocityVec.angle();
+    }
+
+    // метод, который узнает когда движется обьект, а когда нет
+    public boolean isMoving() {
+        return (getSpeed() > 0);
+    }
+
+    // метод устанавливает величину вектора для ускорения обьекта
+    public void setAcceleration(float acc) {
+        acceleration = acc;
+    }
+
+    // метод для самого ускорения обьекта в указанном направлении
+    public void accelerateAtAngle(float angle) {
+        accelerationVec.add(new Vector2(acceleration, 0).setAngle(angle));
+    }
+
+    // метод, который ускоряет обьект в том направлении, в котором он находится в данный момент
+    public void accelerateForward() {
+        accelerateAtAngle(getRotation());
+    }
+
+    // методы для установки максимальной скорости и замедления
+    public void setMaxSpeed(float ms) {
+        maxSpeed = ms;
+    }
+
+    public void setDeceleration(float dec) {
+        deceleration = dec;
+    }
+
+    // метод для вычисления скорости, ускорения, направления, положения обьекта, и ОБНОВЛЕНИЯ ЭТИХ ПАРАМЕТРОВ
+    public void applyPhysics(float dt) {
+        velocityVec.add(accelerationVec.x * dt, accelerationVec.y * dt);
+        float speed = getSpeed();
+
+        if (accelerationVec.len() == 0)
+            speed -= deceleration * dt;
+
+        speed = MathUtils.clamp(speed, 0, maxSpeed);
+
+        setSpeed(speed);
+
+        moveBy(velocityVec.x * dt, velocityVec.y * dt);
+
+        accelerationVec.set(0, 0);
     }
 
 }
