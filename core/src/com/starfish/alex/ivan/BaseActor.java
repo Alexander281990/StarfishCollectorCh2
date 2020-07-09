@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -36,6 +37,9 @@ public class BaseActor extends Actor {
 
     // переменная для многоугольника "Polygon"(для обнаружения столкновения обьектов)
     private Polygon boundaryPolygon;
+
+    //
+    private static Rectangle worldBounds;
 
     public BaseActor(float x, float y, Stage s) {
         super();
@@ -330,6 +334,31 @@ public class BaseActor extends Actor {
     //
     public static int count(Stage stage, String className) {
         return getList(stage, className).size();
+    }
+
+    // методы, которые позволяют сохранять размер игрового мира либо непосредственно из числовых значений, либо на основе актера
+    public static void setWorldBounds(float width, float height) {
+        worldBounds = new Rectangle(0, 0, width, height);
+    }
+
+    public static void setWorldBounds(BaseActor ba) {
+        setWorldBounds(ba.getWidth(), ba.getHeight());
+    }
+
+    // метод, который удерживает актера в прямоугольной области, определяемой границами мира
+    public void boundToWorld() {
+        // по левому краю
+        if (getX() < 0)
+            setX(0);
+        // по правому краю
+        if (getX() + getWidth() > worldBounds.width)
+            setX(worldBounds.width - getWidth());
+        // по нижнему краю
+        if (getY() < 0)
+            setY(0);
+        // по верхнему краю
+        if (getY() + getHeight() > worldBounds.height)
+            setY(worldBounds.height - getHeight());
     }
 
 }

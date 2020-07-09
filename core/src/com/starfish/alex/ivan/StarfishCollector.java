@@ -12,6 +12,8 @@ public class StarfishCollector extends GameBeta {
         ocean.loadTexture( "water-border.jpg" );
         ocean.setSize(800,600);
 
+        BaseActor.setWorldBounds(ocean); // устанавливает границы игрового мира
+
         new Starfish(400,400, mainStage);
         new Starfish(500,100, mainStage);
         new Starfish(100,450, mainStage);
