@@ -39,6 +39,7 @@ public class Turtle extends BaseActor {
             setRotation(getMotionAngle());
 
         boundToWorld(); // держит черепаху в пределах мировых границ
+        alignCamera();
     }
 
 

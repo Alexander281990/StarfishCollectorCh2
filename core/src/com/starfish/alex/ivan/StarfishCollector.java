@@ -10,7 +10,7 @@ public class StarfishCollector extends GameBeta {
     {
         BaseActor ocean = new BaseActor(0,0, mainStage);
         ocean.loadTexture( "water-border.jpg" );
-        ocean.setSize(800,600);
+        ocean.setSize(1200,900);
 
         BaseActor.setWorldBounds(ocean); // устанавливает границы игрового мира
 
@@ -53,7 +53,7 @@ public class StarfishCollector extends GameBeta {
         if ( BaseActor.count(mainStage, "com.starfish.alex.ivan.Starfish") == 0 && !win )
         {
             win = true;
-            BaseActor youWinMessage = new BaseActor(0,0,mainStage);
+            BaseActor youWinMessage = new BaseActor(0,0,uiStage);
             youWinMessage.loadTexture("you-win.png");
             youWinMessage.centerAtPosition(400,300);
             youWinMessage.setOpacity(0);
