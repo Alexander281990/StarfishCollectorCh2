@@ -12,6 +12,8 @@ public class Turtle extends BaseActor {
         String[] filenames = {"turtle-1.png","turtle-2.png","turtle-3.png","turtle-4.png","turtle-5.png","turtle-6.png"};
         loadAnimationFromFiles(filenames, 0.1f, true);
 
+        setBoundaryPolygon(8); // создание восьмиугольника вокруг обьекта(Для обнаружения столкновения)
+
         // инициализация физичечких параметров черепахи
         setAcceleration(400); // скорость будет увеличиваться на этот параметр в секунду
         setMaxSpeed(100); // максимальная скорость черепахи
