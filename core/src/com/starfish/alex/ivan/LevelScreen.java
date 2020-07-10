@@ -56,6 +56,7 @@ public class LevelScreen extends BaseScreen {
         restartButton.setPosition(720,520);
         uiStage.addActor(restartButton);
 
+        // код, который обрабатывает нажатие кнопки и перезапускает Level (Лямбда-выражение)
         restartButton.addListener(
                 new EventListener() {
                     @Override
