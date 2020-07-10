@@ -13,13 +13,14 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
 
-public class BaseActor extends Actor {
+public class BaseActor extends Group {
 
     // переменные для анимации
     private Animation<TextureRegion> animation;
@@ -43,6 +44,9 @@ public class BaseActor extends Actor {
     //
     private static Rectangle worldBounds;
 
+    //
+
+
     public BaseActor(float x, float y, Stage s) {
         super();
         setPosition(x, y);
@@ -63,6 +67,8 @@ public class BaseActor extends Actor {
         // инициализация переменных для максимальной скорости и ускорения
         maxSpeed = 1000;
         deceleration = 0;
+
+        //
 
     }
 
@@ -377,5 +383,24 @@ public class BaseActor extends Actor {
         cam.position.y = MathUtils.clamp(cam.position.y, cam.viewportHeight/2, worldBounds.height - cam.viewportHeight/2);
         cam.update();
     }
+
+    // метод для обтекания экрана
+    public void wrapAroundWorld()
+    {
+        if (getX() + getWidth() < 0)
+            setX( worldBounds.width );
+
+        if (getX() > worldBounds.width)
+            setX( -getWidth());
+
+        if (getY() + getHeight() < 0)
+            setY( worldBounds.height );
+
+        if (getY() > worldBounds.height)
+            setY( -getHeight() );
+    }
+
+    //
+
 
 }
