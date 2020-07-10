@@ -1,11 +1,16 @@
 package com.starfish.alex.ivan;
 
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+
 
 public class LevelScreen extends BaseScreen {
 
     private Turtle turtle;
     private boolean win;
+    private Label starfishLabel;
+
     @Override
     public void initialize() {
         BaseActor ocean = new BaseActor(0,0, mainStage);
@@ -27,6 +32,11 @@ public class LevelScreen extends BaseScreen {
         turtle = new Turtle(20,20, mainStage);
 
         win = false;
+
+        starfishLabel = new Label("Starfish Left:", BaseGame.labelStyle);
+        starfishLabel.setColor( Color.CYAN );
+        //starfishLabel.setPosition( 20, 520 );
+        //uiStage.addActor(starfishLabel);
     }
 
     @Override
@@ -60,5 +70,6 @@ public class LevelScreen extends BaseScreen {
             youWinMessage.addAction( Actions.delay(1) );
             youWinMessage.addAction( Actions.after( Actions.fadeIn(1) ) );
         }
+        starfishLabel.setText("Starfish Left: " + BaseActor.count(mainStage, "com.starfish.alex.ivan.Starfish"));
     }
 }
