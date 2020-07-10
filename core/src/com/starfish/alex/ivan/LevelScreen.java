@@ -44,8 +44,8 @@ public class LevelScreen extends BaseScreen {
 
         starfishLabel = new Label("Starfish Left:", BaseGame.labelStyle);
         starfishLabel.setColor( Color.CYAN );
-        starfishLabel.setPosition( 20, 520 );
-        uiStage.addActor(starfishLabel);
+//        starfishLabel.setPosition( 20, 520 );
+//        uiStage.addActor(starfishLabel);
 
         ButtonStyle buttonStyle = new ButtonStyle();
         Texture buttonTex = new Texture( Gdx.files.internal("undo.png") );
@@ -53,8 +53,8 @@ public class LevelScreen extends BaseScreen {
         buttonStyle.up = new TextureRegionDrawable( buttonRegion );
         Button restartButton = new Button( buttonStyle );
         restartButton.setColor( Color.CYAN );
-        restartButton.setPosition(720,520);
-        uiStage.addActor(restartButton);
+//        restartButton.setPosition(720,520);
+//        uiStage.addActor(restartButton);
 
         // код, который обрабатывает нажатие кнопки и перезапускает Level (Лямбда-выражение)
         restartButton.addListener(
@@ -68,6 +68,10 @@ public class LevelScreen extends BaseScreen {
                     }
                 }
         );
+        uiTable.pad(10);
+        uiTable.add(starfishLabel).top();
+        uiTable.add().expandX().expandY();
+        uiTable.add(restartButton).top();
     }
 
     @Override
