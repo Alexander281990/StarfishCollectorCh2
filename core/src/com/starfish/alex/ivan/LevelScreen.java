@@ -19,6 +19,7 @@ public class LevelScreen extends BaseScreen {
     private Turtle turtle;
     private boolean win;
     private Label starfishLabel;
+    private DialogBox dialogBox;
 
     @Override
     public void initialize() {
@@ -72,6 +73,21 @@ public class LevelScreen extends BaseScreen {
         uiTable.add(starfishLabel).top();
         uiTable.add().expandX().expandY();
         uiTable.add(restartButton).top();
+
+        Sign sign1 = new Sign(20,400, mainStage);
+        sign1.setText("West Starfish Bay");
+        Sign sign2 = new Sign(600,300, mainStage);
+        sign2.setText("East Starfish Bay");
+        dialogBox = new DialogBox(0,0, uiStage);
+        dialogBox.setBackgroundColor( Color.TAN );
+        dialogBox.setFontColor( Color.BROWN );
+        dialogBox.setDialogSize(600, 100);
+        dialogBox.setFontScale(0.80f);
+        dialogBox.alignCenter();
+        dialogBox.setVisible(false);
+        uiTable.row();
+        uiTable.add(dialogBox).colspan(3);
+
     }
 
     @Override
@@ -106,5 +122,27 @@ public class LevelScreen extends BaseScreen {
             youWinMessage.addAction( Actions.after( Actions.fadeIn(1) ) );
         }
         starfishLabel.setText("Starfish Left: " + BaseActor.count(mainStage, "com.starfish.alex.ivan.Starfish"));
+
+        for ( BaseActor signActor : BaseActor.getList(mainStage, "com.starfish.alex.ivan.Sign") )
+        {
+            Sign sign = (Sign)signActor;
+
+            turtle.preventOverlap(sign);
+            boolean nearby = turtle.isWithinDistance(4, sign);
+
+            if ( nearby && !sign.isViewing() )
+            {
+                dialogBox.setText( sign.getText() );
+                dialogBox.setVisible( true );
+                sign.setViewing( true );
+            }
+
+            if (sign.isViewing() && !nearby)
+            {
+                dialogBox.setText( " " );
+                dialogBox.setVisible( false );
+                sign.setViewing( false );
+            }
+        }
     }
 }

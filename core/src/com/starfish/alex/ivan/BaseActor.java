@@ -401,6 +401,20 @@ public class BaseActor extends Group {
     }
 
     //
+    public boolean isWithinDistance(float distance, BaseActor other)
+    {
+        Polygon poly1 = this.getBoundaryPolygon();
+        float scaleX = (this.getWidth() + 2 * distance) / this.getWidth();
+        float scaleY = (this.getHeight() + 2 * distance) / this.getHeight();
+        poly1.setScale(scaleX, scaleY);
 
+        Polygon poly2 = other.getBoundaryPolygon();
+
+        // initial test to improve performance
+        if ( !poly1.getBoundingRectangle().overlaps(poly2.getBoundingRectangle()) )
+            return false;
+
+        return Intersector.overlapConvexPolygons( poly1, poly2 );
+    }
 
 }
