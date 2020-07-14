@@ -1,8 +1,13 @@
 package com.starfish.alex.ivan;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 public class StoryScreen extends BaseScreen {
 
@@ -54,6 +59,25 @@ public class StoryScreen extends BaseScreen {
         scene.addSegment( new SceneSegment( turtle, SceneActions.moveToOutsideRight(1) ));
         scene.addSegment( new SceneSegment( background, Actions.fadeOut(1) ));
 
+        // Этот код для тестировки на андроид
+//        TextButton startButton = new TextButton( "Start", BaseGame.textButtonStyle );
+////        startButton.setPosition(150,150);
+////        uiStage.addActor(startButton);
+//        startButton.addListener(
+//                new EventListener() {
+//                    @Override
+//                    public boolean handle(Event e) {
+//                        if (!(e instanceof InputEvent) ||
+//                                !((InputEvent) e).getType().equals(InputEvent.Type.touchDown))
+//                            return false;
+//                        scene.loadNextSegment();
+//                        return false;
+//                    }
+//                }
+//        );
+//
+//        uiTable.add(startButton);
+
         scene.start();
 
 
@@ -66,7 +90,6 @@ public class StoryScreen extends BaseScreen {
     public boolean keyDown(int keyCode) {
         if ( keyCode == Input.Keys.C && continueKey.isVisible() )
             scene.loadNextSegment();
-
         return false;
     }
 
