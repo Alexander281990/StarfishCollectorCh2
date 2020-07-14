@@ -1,5 +1,7 @@
 package com.starfish.alex.ivan;
 
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.graphics.Color;
@@ -20,6 +22,13 @@ public class LevelScreen extends BaseScreen {
     private boolean win;
     private Label starfishLabel;
     private DialogBox dialogBox;
+
+    // переменные для добавления аудио
+    private float audioVolume;
+    private Sound waterDrop;
+    private Music instrumental;
+    private Music oceanSurf;
+
 
     @Override
     public void initialize() {
@@ -62,16 +71,41 @@ public class LevelScreen extends BaseScreen {
                 new EventListener() {
                     @Override
                     public boolean handle(Event e) {
-                        InputEvent ie = (InputEvent) e;
-                        if (ie.getType().equals(Type.touchDown))
-                            StarfishGame.setActiveScreen(new LevelScreen());
-                        return false;
+                        if (!LevelScreen.this.isTouchDownEvent(e))
+                            return false;
+                        instrumental.dispose();
+                        oceanSurf.dispose();
+                        StarfishGame.setActiveScreen(new LevelScreen());
+                        return true;
                     }
                 }
         );
+
+        ButtonStyle buttonStyle2 = new ButtonStyle();
+        Texture buttonTex2 = new Texture( Gdx.files.internal("audio.png") );
+        TextureRegion buttonRegion2 = new TextureRegion(buttonTex2);
+        buttonStyle2.up = new TextureRegionDrawable( buttonRegion2 );
+        Button muteButton = new Button( buttonStyle2 ); muteButton.setColor( Color.CYAN );
+        muteButton.addListener(
+
+                new EventListener() {
+                    @Override
+                    public boolean handle(Event e) {
+                        if (!LevelScreen.this.isTouchDownEvent(e))
+                            return false;
+                        audioVolume = 1 - audioVolume;
+                        instrumental.setVolume(audioVolume);
+                        oceanSurf.setVolume(audioVolume);
+                        return true;
+                    }
+                }
+        );
+
+
         uiTable.pad(10);
         uiTable.add(starfishLabel).top();
         uiTable.add().expandX().expandY();
+        uiTable.add(muteButton).top();
         uiTable.add(restartButton).top();
 
         Sign sign1 = new Sign(20,400, mainStage);
@@ -86,7 +120,20 @@ public class LevelScreen extends BaseScreen {
         dialogBox.alignCenter();
         dialogBox.setVisible(false);
         uiTable.row();
-        uiTable.add(dialogBox).colspan(3);
+        uiTable.add(dialogBox).colspan(4);
+
+        // инициализация переменных аудио, и запуск фоновой музыки
+        waterDrop = Gdx.audio.newSound(Gdx.files.internal("Water_Drop.ogg"));
+        instrumental = Gdx.audio.newMusic(Gdx.files.internal("Master_of_the_Feast.ogg"));
+        oceanSurf = Gdx.audio.newMusic(Gdx.files.internal("Ocean_Waves.ogg"));
+        audioVolume = 1.00f;
+        instrumental.setLooping(true);
+        instrumental.setVolume(audioVolume);
+        instrumental.play();
+        oceanSurf.setLooping(true);
+        oceanSurf.setVolume(audioVolume);
+        oceanSurf.play();
+
 
     }
 
@@ -101,6 +148,7 @@ public class LevelScreen extends BaseScreen {
             if ( turtle.overlaps(starfish) && !starfish.collected )
             {
                 starfish.collected = true;
+                waterDrop.play(audioVolume); // звуковой эффект капли воды будет воспроизводиться всякий раз, когда черепаха перекрывает морскую звезду
                 starfish.clearActions();
                 starfish.addAction( Actions.fadeOut(1) );
                 starfish.addAction( Actions.after( Actions.removeActor() ) );
