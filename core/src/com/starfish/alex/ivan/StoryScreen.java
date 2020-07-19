@@ -78,6 +78,7 @@ public class StoryScreen extends BaseScreen {
 //
 //        uiTable.add(startButton);
 
+
         scene.start();
 
 
